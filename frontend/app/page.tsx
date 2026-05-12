@@ -3,7 +3,7 @@ async function getTalks() {
     const response = await fetch(
   'https://hackaton-ifrn.onrender.com/talks',
   {
-    next: { revalidate: 30 },
+    cache: 'force-cache'
   }
 );
 
