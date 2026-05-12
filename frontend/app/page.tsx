@@ -1,6 +1,6 @@
 async function getTalks() {
   try {
-    const response = await fetch('http://localhost:3000/talks', {
+    const response = await fetch('https://hackaton-ifrn.onrender.com/talks', {
       cache: 'no-store',
     });
 
