@@ -12,7 +12,9 @@ export default function AdminPage() {
   const [talks, setTalks] = useState<any[]>([]);
 
   async function loadTalks() {
-    const response = await fetch('http://localhost:3000/talks');
+    const response = await fetch(
+      'https://hackaton-ifrn.onrender.com/talks'
+    );
 
     const data = await response.json();
 
@@ -26,21 +28,24 @@ export default function AdminPage() {
   async function handleSubmit(e: any) {
     e.preventDefault();
 
-    await fetch('http://localhost:3000/talks', {
-      method: 'POST',
+    await fetch(
+      'https://hackaton-ifrn.onrender.com/talks',
+      {
+        method: 'POST',
 
-      headers: {
-        'Content-Type': 'application/json',
-      },
+        headers: {
+          'Content-Type': 'application/json',
+        },
 
-      body: JSON.stringify({
-        title,
-        speaker,
-        description,
-        location,
-        startTime: new Date(startTime).toISOString(),
-      }),
-    });
+        body: JSON.stringify({
+          title,
+          speaker,
+          description,
+          location,
+          startTime: new Date(startTime).toISOString(),
+        }),
+      }
+    );
 
     setTitle('');
     setSpeaker('');
@@ -52,149 +57,237 @@ export default function AdminPage() {
   }
 
   async function handleDelete(id: number) {
-    await fetch(`http://localhost:3000/talks/${id}`, {
-      method: 'DELETE',
-    });
+    await fetch(
+      `https://hackaton-ifrn.onrender.com/talks/${id}`,
+      {
+        method: 'DELETE',
+      }
+    );
 
     loadTalks();
   }
 
   return (
-    <main className="min-h-screen bg-black text-white p-4 md:p-8">
+    <main className="min-h-screen bg-white text-zinc-900">
 
-      <div className="max-w-6xl mx-auto">
+      {/* NAVBAR */}
+      <nav className="border-b border-zinc-200 backdrop-blur sticky top-0 bg-white/80 z-50">
+        <div className="max-w-6xl mx-auto px-4 md:px-8 py-5 flex items-center justify-between">
 
-        <h1 className="text-4xl font-black mb-10">
-          Painel Administrativo
-        </h1>
+          <div>
+            <h1 className="text-xl md:text-2xl font-black text-green-600">
+              IFRN Tech Admin
+            </h1>
+          </div>
 
-        <div className="grid lg:grid-cols-2 gap-10">
+          <div className="hidden md:flex items-center gap-8 text-zinc-700">
 
-          {/* FORMULÁRIO */}
-          <form
-            onSubmit={handleSubmit}
-            className="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 space-y-6"
-          >
-
-            <h2 className="text-2xl font-bold mb-6">
-              Nova Palestra
-            </h2>
-
-            <div>
-              <label className="block mb-2">
-                Título
-              </label>
-
-              <input
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                className="w-full bg-zinc-800 rounded-xl p-4"
-              />
-            </div>
-
-            <div>
-              <label className="block mb-2">
-                Palestrante
-              </label>
-
-              <input
-                value={speaker}
-                onChange={(e) => setSpeaker(e.target.value)}
-                className="w-full bg-zinc-800 rounded-xl p-4"
-              />
-            </div>
-
-            <div>
-              <label className="block mb-2">
-                Descrição
-              </label>
-
-              <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="w-full bg-zinc-800 rounded-xl p-4 h-32"
-              />
-            </div>
-
-            <div>
-              <label className="block mb-2">
-                Local
-              </label>
-
-              <input
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                className="w-full bg-zinc-800 rounded-xl p-4"
-              />
-            </div>
-
-            <div>
-              <label className="block mb-2">
-                Horário
-              </label>
-
-              <input
-                type="datetime-local"
-                value={startTime}
-                onChange={(e) => setStartTime(e.target.value)}
-                className="w-full bg-zinc-800 rounded-xl p-4"
-              />
-            </div>
-
-            <button
-              className="bg-cyan-500 hover:bg-cyan-400 transition text-black font-bold px-6 py-4 rounded-xl w-full"
+            <a
+              href="/"
+              className="hover:text-green-600 transition"
             >
-              Cadastrar Palestra
-            </button>
+              Página Inicial
+            </a>
 
-          </form>
+            <a
+              href="/admin"
+              className="hover:text-green-600 transition"
+            >
+              Painel
+            </a>
 
-          {/* LISTAGEM */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
+          </div>
 
-            <h2 className="text-2xl font-bold mb-8">
-              Palestras Cadastradas
-            </h2>
+          <div className="bg-green-600 text-white px-5 py-2 rounded-xl font-bold">
+            Administração
+          </div>
 
-            <div className="space-y-4">
+        </div>
+      </nav>
 
-              {talks.map((talk) => (
+      {/* CONTEÚDO */}
+      <section className="px-4 md:px-8 py-16">
 
-                <div
-                  key={talk.id}
-                  className="border border-zinc-800 rounded-2xl p-5"
-                >
+        <div className="max-w-6xl mx-auto">
 
-                  <div className="flex items-start justify-between gap-4">
+          <div className="mb-12">
 
-                    <div>
+            <p className="text-green-600 font-semibold mb-3">
+              Painel Administrativo
+            </p>
 
-                      <h3 className="text-xl font-bold">
-                        {talk.title}
-                      </h3>
+            <h1 className="text-4xl md:text-5xl font-black">
+              Gerenciamento de Palestras
+            </h1>
 
-                      <p className="text-cyan-400 mt-1">
-                        {talk.speaker}
-                      </p>
+            <p className="text-zinc-600 mt-4 max-w-2xl">
+              Cadastre, visualize e remova palestras da programação
+              oficial da Feira Tecnológica IFRN.
+            </p>
 
-                      <p className="text-zinc-500 text-sm mt-3">
-                        {new Date(talk.startTime).toLocaleString('pt-BR')}
-                      </p>
+          </div>
 
-                    </div>
+          <div className="grid lg:grid-cols-2 gap-10">
 
-                    <button
-                      onClick={() => handleDelete(talk.id)}
-                      className="bg-red-500 hover:bg-red-400 transition px-4 py-2 rounded-xl text-sm font-bold"
-                    >
-                      Excluir
-                    </button>
+            {/* FORMULÁRIO */}
+            <form
+              onSubmit={handleSubmit}
+              className="bg-zinc-100 border border-zinc-200 rounded-3xl p-6 md:p-8 shadow-sm"
+            >
 
-                  </div>
+              <h2 className="text-2xl font-bold mb-8">
+                Nova Palestra
+              </h2>
+
+              <div className="space-y-6">
+
+                <div>
+
+                  <label className="block mb-2 font-medium text-zinc-700">
+                    Título
+                  </label>
+
+                  <input
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    className="w-full bg-white border border-zinc-300 rounded-xl p-4 outline-none focus:border-green-500 transition"
+                    placeholder="Digite o título da palestra"
+                  />
 
                 </div>
 
-              ))}
+                <div>
+
+                  <label className="block mb-2 font-medium text-zinc-700">
+                    Palestrante
+                  </label>
+
+                  <input
+                    value={speaker}
+                    onChange={(e) => setSpeaker(e.target.value)}
+                    className="w-full bg-white border border-zinc-300 rounded-xl p-4 outline-none focus:border-green-500 transition"
+                    placeholder="Nome do palestrante"
+                  />
+
+                </div>
+
+                <div>
+
+                  <label className="block mb-2 font-medium text-zinc-700">
+                    Descrição
+                  </label>
+
+                  <textarea
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    className="w-full bg-white border border-zinc-300 rounded-xl p-4 h-32 outline-none focus:border-green-500 transition"
+                    placeholder="Descrição da palestra"
+                  />
+
+                </div>
+
+                <div>
+
+                  <label className="block mb-2 font-medium text-zinc-700">
+                    Local
+                  </label>
+
+                  <input
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    className="w-full bg-white border border-zinc-300 rounded-xl p-4 outline-none focus:border-green-500 transition"
+                    placeholder="Ex: Auditório Principal"
+                  />
+
+                </div>
+
+                <div>
+
+                  <label className="block mb-2 font-medium text-zinc-700">
+                    Horário
+                  </label>
+
+                  <input
+                    type="datetime-local"
+                    value={startTime}
+                    onChange={(e) => setStartTime(e.target.value)}
+                    className="w-full bg-white border border-zinc-300 rounded-xl p-4 outline-none focus:border-green-500 transition"
+                  />
+
+                </div>
+
+                <button
+                  className="bg-green-600 hover:bg-green-500 transition text-white font-bold px-6 py-4 rounded-xl w-full"
+                >
+                  Cadastrar Palestra
+                </button>
+
+              </div>
+
+            </form>
+
+            {/* LISTAGEM */}
+            <div className="bg-zinc-100 border border-zinc-200 rounded-3xl p-6 md:p-8 shadow-sm">
+
+              <div className="flex items-center justify-between mb-8">
+
+                <h2 className="text-2xl font-bold">
+                  Palestras Cadastradas
+                </h2>
+
+                <span className="text-zinc-500 text-sm">
+                  {talks.length} cadastradas
+                </span>
+
+              </div>
+
+              <div className="space-y-4">
+
+                {talks.map((talk) => (
+
+                  <div
+                    key={talk.id}
+                    className="bg-white border border-zinc-200 rounded-2xl p-5 hover:border-green-500 transition"
+                  >
+
+                    <div className="flex items-start justify-between gap-4">
+
+                      <div>
+
+                        <h3 className="text-xl font-bold">
+                          {talk.title}
+                        </h3>
+
+                        <p className="text-green-600 mt-1 font-medium">
+                          {talk.speaker}
+                        </p>
+
+                        <p className="text-zinc-500 text-sm mt-3">
+                          {new Date(
+                            talk.startTime
+                          ).toLocaleString('pt-BR')}
+                        </p>
+
+                        <p className="text-zinc-600 mt-3 text-sm">
+                          {talk.location}
+                        </p>
+
+                      </div>
+
+                      <button
+                        onClick={() => handleDelete(talk.id)}
+                        className="bg-red-500 hover:bg-red-400 transition text-white px-4 py-2 rounded-xl text-sm font-bold"
+                      >
+                        Excluir
+                      </button>
+
+                    </div>
+
+                  </div>
+
+                ))}
+
+              </div>
 
             </div>
 
@@ -202,7 +295,7 @@ export default function AdminPage() {
 
         </div>
 
-      </div>
+      </section>
 
     </main>
   );

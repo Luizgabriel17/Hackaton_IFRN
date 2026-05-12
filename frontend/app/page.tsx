@@ -1,8 +1,11 @@
 async function getTalks() {
   try {
-    const response = await fetch('https://hackaton-ifrn.onrender.com/talks', {
-      cache: 'no-store',
-    });
+    const response = await fetch(
+  'https://hackaton-ifrn.onrender.com/talks',
+  {
+    next: { revalidate: 30 },
+  }
+);
 
     if (!response.ok) {
       throw new Error('Erro ao buscar palestras');
