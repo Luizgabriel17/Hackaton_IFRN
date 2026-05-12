@@ -1,23 +1,6 @@
-async function getTalks() {
-  try {
-    const response = await fetch(
-  'https://hackaton-ifrn.onrender.com/talks',
-  {
-    cache: 'force-cache'
-  }
-);
+'use client';
 
-    if (!response.ok) {
-      throw new Error('Erro ao buscar palestras');
-    }
-
-    return response.json();
-  } catch (error) {
-    console.log(error);
-
-    return [];
-  }
-}
+import { useEffect, useState } from 'react';
 
 function groupTalksByDay(talks: any[]) {
   return talks.reduce((groups, talk) => {
@@ -34,8 +17,32 @@ function groupTalksByDay(talks: any[]) {
   }, {} as Record<string, any[]>);
 }
 
-export default async function Home() {
-  const talks = await getTalks();
+export default function Home() {
+  const [talks, setTalks] = useState<any[]>([]);
+
+  async function loadTalks() {
+    try {
+      const response = await fetch(
+        'https://hackaton-ifrn.onrender.com/talks'
+      );
+
+      if (!response.ok) {
+        throw new Error('Erro ao buscar palestras');
+      }
+
+      const data = await response.json();
+
+      setTalks(data);
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    loadTalks();
+  }, []);
+
   const groupedTalks = groupTalksByDay(talks);
 
   return (
